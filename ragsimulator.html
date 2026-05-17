@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RAG Simulator</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: Inter, sans-serif;
+    }
+
+    body{
+      background:#0f172a;
+      color:white;
+      overflow-x:hidden;
+    }
+
+    .container{
+      max-width:1400px;
+      margin:auto;
+      padding:40px;
+    }
+
+    .hero{
+      text-align:center;
+      margin-bottom:40px;
+    }
+
+    .hero h1{
+      font-size:56px;
+      font-weight:800;
+      background:linear-gradient(to right,#38bdf8,#818cf8);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      margin-bottom:16px;
+    }
+
+    .hero p{
+      color:#94a3b8;
+      font-size:20px;
+      max-width:900px;
+      margin:auto;
+      line-height:1.6;
+    }
+
+    .pipeline{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:20px;
+      margin-top:40px;
+    }
+
+    .step{
+      background:#111827;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:24px;
+      padding:24px;
+      min-height:260px;
+      position:relative;
+      overflow:hidden;
+      transition:0.4s;
+    }
+
+    .step:hover{
+      transform:translateY(-5px);
+      border-color:#38bdf8;
+      box-shadow:0 20px 40px rgba(56,189,248,0.2);
+    }
+
+    .step-number{
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      background:linear-gradient(to right,#38bdf8,#818cf8);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      margin-bottom:18px;
+    }
+
+    .step h2{
+      font-size:22px;
+      margin-bottom:12px;
+    }
+
+    .step p{
+      color:#cbd5e1;
+      line-height:1.6;
+      font-size:15px;
+    }
+
+    .visual-box{
+      margin-top:18px;
+      background:#1e293b;
+      border-radius:16px;
+      padding:14px;
+      min-height:90px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:flex-start;
+    }
+
+    .doc{
+      background:#334155;
+      padding:10px 14px;
+      border-radius:12px;
+      font-size:13px;
+    }
+
+    .chunk{
+      background:#0ea5e9;
+      color:white;
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:12px;
+    }
+
+    .vector{
+      background:#8b5cf6;
+      color:white;
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:12px;
+    }
+
+    .query{
+      background:#22c55e;
+      color:white;
+      padding:10px 14px;
+      border-radius:12px;
+      font-size:14px;
+      display:inline-block;
+    }
+
+    .answer{
+      background:#f59e0b;
+      color:#111827;
+      padding:12px;
+      border-radius:12px;
+      font-weight:700;
+      line-height:1.5;
+    }
+
+    .controls{
+      margin-top:50px;
+      background:#111827;
+      border-radius:24px;
+      padding:30px;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .controls h2{
+      margin-bottom:20px;
+      font-size:32px;
+    }
+
+    textarea{
+      width:100%;
+      min-height:120px;
+      background:#0f172a;
+      border:none;
+      outline:none;
+      color:white;
+      padding:20px;
+      border-radius:16px;
+      font-size:16px;
+      margin-bottom:20px;
+      resize:none;
+    }
+
+    input{
+      width:100%;
+      padding:18px;
+      border-radius:16px;
+      border:none;
+      outline:none;
+      background:#0f172a;
+      color:white;
+      font-size:16px;
+      margin-bottom:20px;
+    }
+
+    button{
+      padding:16px 28px;
+      border:none;
+      border-radius:16px;
+      background:linear-gradient(to right,#38bdf8,#818cf8);
+      color:white;
+      font-size:16px;
+      font-weight:700;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    button:hover{
+      transform:scale(1.03);
+    }
+
+    .flow{
+      margin-top:40px;
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:20px;
+    }
+
+    .active{
+      border-color:#22c55e !important;
+      box-shadow:0 0 30px rgba(34,197,94,0.3);
+    }
+
+    .footer{
+      text-align:center;
+      margin-top:50px;
+      color:#64748b;
+      font-size:14px;
+    }
+
+    @media(max-width:1200px){
+      .pipeline,
+      .flow{
+        grid-template-columns:1fr;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="hero">
+      <h1>RAG Simulator</h1>
+      <p>
+        Learn how Retrieval-Augmented Generation (RAG) works visually —
+        just like teaching a 5th grade student using blocks, memory cards,
+        and AI thinking steps.
+      </p>
+    </div>
+
+    <div class="controls">
+      <h2>Try Your Own RAG Flow</h2>
+
+      <textarea id="documents">
+Uber users face long wait times during peak hours.
+AI assistants can help pre-book rides for office commuters.
+Vector databases store embeddings for semantic search.
+RAG helps AI retrieve relevant information before answering.
+      </textarea>
+
+      <input
+        type="text"
+        id="question"
+        placeholder="Ask something like: How does RAG help AI?"
+      />
+
+      <button onclick="runRAG()">Run RAG Simulation</button>
+    </div>
+
+    <div class="flow">
+
+      <div class="step" id="step1">
+        <div class="step-number">1</div>
+        <h2>Collect Data</h2>
+        <p>
+          We first gather information documents just like collecting books in a library.
+        </p>
+
+        <div class="visual-box" id="documentsBox"></div>
+      </div>
+
+      <div class="step" id="step2">
+        <div class="step-number">2</div>
+        <h2>Create Chunks</h2>
+        <p>
+          Big documents are broken into smaller pieces called chunks.
+        </p>
+
+        <div class="visual-box" id="chunksBox"></div>
+      </div>
+
+      <div class="step" id="step3">
+        <div class="step-number">3</div>
+        <h2>Convert to Embeddings</h2>
+        <p>
+          AI converts chunks into mathematical vectors that capture meaning.
+        </p>
+
+        <div class="visual-box" id="vectorsBox"></div>
+      </div>
+
+      <div class="step" id="step4">
+        <div class="step-number">4</div>
+        <h2>Search Similar Meaning</h2>
+        <p>
+          The user question is converted into an embedding and matched with similar chunks.
+        </p>
+
+        <div class="visual-box" id="searchBox"></div>
+      </div>
+
+      <div class="step" id="step5">
+        <div class="step-number">5</div>
+        <h2>Generate Answer</h2>
+        <p>
+          AI uses the retrieved chunks as memory to generate a smarter answer.
+        </p>
+
+        <div class="visual-box" id="answerBox"></div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      Built to visually explain Retrieval-Augmented Generation (RAG)
+    </div>
+
+  </div>
+
+  <script>
+
+    function fakeEmbedding(text){
+      return [
+        Math.floor(Math.random()*100),
+        Math.floor(Math.random()*100),
+        Math.floor(Math.random()*100)
+      ];
+    }
+
+    function highlightStep(stepId){
+      document.querySelectorAll('.step').forEach(s=>{
+        s.classList.remove('active');
+      });
+
+      document.getElementById(stepId).classList.add('active');
+    }
+
+    async function runRAG(){
+
+      const docs = document
+        .getElementById('documents')
+        .value
+        .split('\n')
+        .filter(Boolean);
+
+      const question = document.getElementById('question').value;
+
+      document.getElementById('documentsBox').innerHTML='';
+      document.getElementById('chunksBox').innerHTML='';
+      document.getElementById('vectorsBox').innerHTML='';
+      document.getElementById('searchBox').innerHTML='';
+      document.getElementById('answerBox').innerHTML='';
+
+      // STEP 1
+      highlightStep('step1');
+
+      docs.forEach(doc=>{
+        const el=document.createElement('div');
+        el.className='doc';
+        el.innerText=doc;
+        document.getElementById('documentsBox').appendChild(el);
+      });
+
+      await delay(1500);
+
+      // STEP 2
+      highlightStep('step2');
+
+      let chunks=[];
+
+      docs.forEach(doc=>{
+        const words=doc.split(' ');
+
+        for(let i=0;i<words.length;i+=5){
+          const chunk=words.slice(i,i+5).join(' ');
+          chunks.push(chunk);
+
+          const el=document.createElement('div');
+          el.className='chunk';
+          el.innerText=chunk;
+          document.getElementById('chunksBox').appendChild(el);
+        }
+      });
+
+      await delay(1500);
+
+      // STEP 3
+      highlightStep('step3');
+
+      let vectors=[];
+
+      chunks.forEach(chunk=>{
+        const embedding=fakeEmbedding(chunk);
+
+        vectors.push({
+          chunk,
+          embedding
+        });
+
+        const el=document.createElement('div');
+        el.className='vector';
+        el.innerText=`[${embedding.join(', ')}]`;
+        document.getElementById('vectorsBox').appendChild(el);
+      });
+
+      await delay(1500);
+
+      // STEP 4
+      highlightStep('step4');
+
+      const queryEmbedding=fakeEmbedding(question);
+
+      const queryEl=document.createElement('div');
+      queryEl.className='query';
+      queryEl.innerHTML=`
+        <strong>Question:</strong><br/>
+        ${question}<br/><br/>
+        <strong>Embedding:</strong><br/>
+        [${queryEmbedding.join(', ')}]
+      `;
+
+      document.getElementById('searchBox').appendChild(queryEl);
+
+      await delay(1500);
+
+      const matchedChunks = chunks
+        .filter(chunk =>
+          question.toLowerCase().split(' ')
+          .some(word => chunk.toLowerCase().includes(word))
+        )
+        .slice(0,2);
+
+      matchedChunks.forEach(chunk=>{
+        const el=document.createElement('div');
+        el.className='chunk';
+        el.innerText=`Matched: ${chunk}`;
+        document.getElementById('searchBox').appendChild(el);
+      });
+
+      await delay(1500);
+
+      // STEP 5
+      highlightStep('step5');
+
+      const answer=document.createElement('div');
+      answer.className='answer';
+
+      answer.innerHTML=`
+        AI retrieved these relevant chunks:<br/><br/>
+        ${matchedChunks.join('<br/><br/>')}
+        <br/><br/>
+        🤖 Final AI Answer:<br/>
+        Based on the retrieved knowledge, RAG helps AI find relevant information before generating an intelligent response.
+      `;
+
+      document.getElementById('answerBox').appendChild(answer);
+    }
+
+    function delay(ms){
+      return new Promise(resolve=>setTimeout(resolve,ms));
+    }
+
+  </script>
+
+</body>
+</html>
