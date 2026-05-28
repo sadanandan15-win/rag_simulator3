@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dr. A.P.J. Abdul Kalam | The People's President</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Poppins',sans-serif;
+      background:#0b1020;
+      color:#f5f5f5;
+      overflow-x:hidden;
+      line-height:1.8;
+    }
+
+    ::selection{
+      background:#ffcc00;
+      color:#000;
+    }
+
+    .hero{
+      height:100vh;
+      position:relative;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      overflow:hidden;
+      background:
+      linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.8)),
+      url('https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+    }
+
+    .hero-content{
+      max-width:900px;
+      padding:20px;
+      animation:fadeIn 2s ease;
+    }
+
+    .hero h1{
+      font-size:5rem;
+      font-weight:700;
+      color:#ffcc00;
+      text-shadow:0 0 20px rgba(255,204,0,0.4);
+    }
+
+    .hero h2{
+      margin-top:10px;
+      font-size:2rem;
+      font-weight:300;
+      color:#ffffff;
+    }
+
+    .hero p{
+      margin-top:25px;
+      font-size:1.1rem;
+      color:#d7d7d7;
+    }
+
+    .scroll-btn{
+      margin-top:40px;
+      display:inline-block;
+      padding:14px 32px;
+      border-radius:40px;
+      background:#ffcc00;
+      color:#000;
+      text-decoration:none;
+      font-weight:600;
+      transition:0.3s;
+    }
+
+    .scroll-btn:hover{
+      transform:translateY(-3px);
+      background:white;
+    }
+
+    section{
+      padding:100px 10%;
+    }
+
+    .section-title{
+      font-size:2.7rem;
+      color:#ffcc00;
+      margin-bottom:30px;
+      position:relative;
+      display:inline-block;
+    }
+
+    .section-title::after{
+      content:'';
+      width:60%;
+      height:4px;
+      background:#ffcc00;
+      position:absolute;
+      left:0;
+      bottom:-10px;
+      border-radius:10px;
+    }
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:40px;
+      align-items:center;
+    }
+
+    .content-grid img{
+      width:100%;
+      border-radius:20px;
+      box-shadow:0 10px 40px rgba(0,0,0,0.5);
+      transition:0.4s;
+    }
+
+    .content-grid img:hover{
+      transform:scale(1.03);
+    }
+
+    .card-container{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:25px;
+      margin-top:40px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.05);
+      padding:30px;
+      border-radius:20px;
+      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,0.08);
+      transition:0.4s;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card::before{
+      content:'';
+      position:absolute;
+      width:120px;
+      height:120px;
+      background:rgba(255,204,0,0.08);
+      border-radius:50%;
+      top:-40px;
+      right:-40px;
+    }
+
+    .card:hover{
+      transform:translateY(-8px);
+      border-color:#ffcc00;
+    }
+
+    .card h3{
+      color:#ffcc00;
+      margin-bottom:15px;
+      font-size:1.3rem;
+    }
+
+    .timeline{
+      margin-top:40px;
+      border-left:4px solid #ffcc00;
+      padding-left:30px;
+    }
+
+    .timeline-item{
+      margin-bottom:40px;
+      position:relative;
+    }
+
+    .timeline-item::before{
+      content:'';
+      position:absolute;
+      width:18px;
+      height:18px;
+      background:#ffcc00;
+      border-radius:50%;
+      left:-40px;
+      top:5px;
+    }
+
+    .timeline-item h4{
+      color:#ffcc00;
+      margin-bottom:10px;
+    }
+
+    .quote{
+      margin:80px auto;
+      max-width:900px;
+      text-align:center;
+      font-size:2rem;
+      font-weight:300;
+      color:#fff;
+      padding:50px;
+      border-left:6px solid #ffcc00;
+      background:rgba(255,255,255,0.04);
+      border-radius:20px;
+    }
+
+    .books{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:25px;
+      margin-top:40px;
+    }
+
+    .book{
+      background:#11192d;
+      border-radius:18px;
+      overflow:hidden;
+      transition:0.4s;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .book:hover{
+      transform:translateY(-8px);
+      border-color:#ffcc00;
+    }
+
+    .book img{
+      width:100%;
+      height:320px;
+      object-fit:cover;
+    }
+
+    .book-content{
+      padding:20px;
+    }
+
+    .book-content h4{
+      color:#ffcc00;
+      margin-bottom:10px;
+    }
+
+    footer{
+      padding:50px 10%;
+      text-align:center;
+      background:#060b16;
+      color:#aaa;
+      margin-top:60px;
+    }
+
+    .top-btn{
+      position:fixed;
+      right:25px;
+      bottom:25px;
+      width:55px;
+      height:55px;
+      border-radius:50%;
+      background:#ffcc00;
+      color:#000;
+      border:none;
+      cursor:pointer;
+      font-size:20px;
+      font-weight:bold;
+      display:none;
+      z-index:1000;
+      transition:0.3s;
+    }
+
+    .top-btn:hover{
+      transform:translateY(-5px);
+    }
+
+    @keyframes fadeIn{
+      from{
+        opacity:0;
+        transform:translateY(30px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    @media(max-width:768px){
+      .hero h1{
+        font-size:3rem;
+      }
+
+      .hero h2{
+        font-size:1.4rem;
+      }
+
+      .quote{
+        font-size:1.4rem;
+        padding:30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Dr. A.P.J. Abdul Kalam</h1>
+      <h2>The Missile Man of India</h2>
+      <p>
+        Scientist. Visionary. Teacher. President.  
+        A man who inspired millions of Indians to dream bigger, think deeper, and work harder for the nation.
+      </p>
+
+      <a href="#about" class="scroll-btn">Explore His Journey</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2 class="section-title">Early Life & Education</h2>
+
+    <div class="content-grid">
+      <div>
+        <p>
+          Avul Pakir Jainulabdeen Abdul Kalam was born on 15 October 1931 in Rameswaram, Tamil Nadu. 
+          Coming from a humble family, young Kalam sold newspapers to support his family while pursuing his education.
+        </p>
+
+        <br>
+
+        <p>
+          Despite financial struggles, he remained deeply passionate about science and learning. He studied physics at 
+          St. Joseph’s College, Tiruchirappalli, and later pursued aerospace engineering at the Madras Institute of Technology.
+        </p>
+
+        <br>
+
+        <p>
+          His childhood discipline, simplicity, and determination shaped him into one of the most respected scientists and leaders in India.
+        </p>
+      </div>
+
+      <div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/A._P._J._Abdul_Kalam.jpg" alt="APJ Abdul Kalam">
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Career in Space & Defence</h2>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <h4>1960 — Joined DRDO</h4>
+        <p>
+          Dr. Kalam began his career at the Defence Research and Development Organisation (DRDO), where he worked on aeronautical projects.
+        </p>
+      </div>
+
+      <div class="timeline-item">
+        <h4>1969 — ISRO & Satellite Launch Vehicle</h4>
+        <p>
+          He joined the Indian Space Research Organisation (ISRO) and became the Project Director for India's first Satellite Launch Vehicle (SLV-III).
+        </p>
+      </div>
+
+      <div class="timeline-item">
+        <h4>1980 — Rohini Satellite Launch</h4>
+        <p>
+          Under his leadership, India successfully deployed the Rohini satellite into orbit, making India a space-capable nation.
+        </p>
+      </div>
+
+      <div class="timeline-item">
+        <h4>Integrated Guided Missile Programme</h4>
+        <p>
+          Dr. Kalam led India's missile development programme and contributed to missiles like Agni and Prithvi, earning the title “Missile Man of India.”
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Major Achievements</h2>
+
+    <div class="card-container">
+
+      <div class="card">
+        <h3>Pokhran-II Nuclear Tests</h3>
+        <p>
+          Played a critical role in India's successful nuclear tests conducted in 1998, strengthening national security.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Vision 2020</h3>
+        <p>
+          Developed a transformative vision for India to become a developed nation through technology, innovation, and education.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Scientific Leadership</h3>
+        <p>
+          Guided India's aerospace and defence sectors with unmatched leadership and strategic thinking.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Youth Inspiration</h3>
+        <p>
+          Inspired millions of students through speeches, books, and interactions focused on dreams and nation-building.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="quote">
+    “Dream is not that which you see while sleeping, it is something that does not let you sleep.”
+  </div>
+
+  <section>
+    <h2 class="section-title">The People's President</h2>
+
+    <div class="content-grid">
+
+      <div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/APJ_Abdul_Kalam_in_2008.jpg" alt="President Kalam">
+      </div>
+
+      <div>
+        <p>
+          Dr. A.P.J. Abdul Kalam served as the 11th President of India from 2002 to 2007. 
+          Unlike traditional politicians, he connected deeply with students and common people.
+        </p>
+
+        <br>
+
+        <p>
+          His Presidency was marked by humility, transparency, and a futuristic vision for India. 
+          He was affectionately known as “The People's President” because of his approachable nature and inspiring personality.
+        </p>
+
+        <br>
+
+        <p>
+          Even after completing his term, he continued traveling across the country delivering lectures and motivating youth.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Books by Dr. Kalam</h2>
+
+    <div class="books">
+
+      <div class="book">
+        <img src="https://m.media-amazon.com/images/I/71KKZlVjbwL.jpg" alt="Wings of Fire">
+        <div class="book-content">
+          <h4>Wings of Fire</h4>
+          <p>
+            An inspiring autobiography tracing his life journey from a small town boy to India's leading scientist.
+          </p>
+        </div>
+      </div>
+
+      <div class="book">
+        <img src="https://m.media-amazon.com/images/I/71jM5f0zA7L.jpg" alt="Ignited Minds">
+        <div class="book-content">
+          <h4>Ignited Minds</h4>
+          <p>
+            A motivational book encouraging India's youth to unlock their true potential.
+          </p>
+        </div>
+      </div>
+
+      <div class="book">
+        <img src="https://m.media-amazon.com/images/I/81R8S2M6dCL.jpg" alt="India 2020">
+        <div class="book-content">
+          <h4>India 2020</h4>
+          <p>
+            His vision document for transforming India into a developed nation.
+          </p>
+        </div>
+      </div>
+
+      <div class="book">
+        <img src="https://m.media-amazon.com/images/I/81bsw6fnUiL.jpg" alt="My Journey">
+        <div class="book-content">
+          <h4>My Journey</h4>
+          <p>
+            A collection of personal stories and experiences from his remarkable life.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Awards & Recognitions</h2>
+
+    <div class="card-container">
+
+      <div class="card">
+        <h3>Bharat Ratna</h3>
+        <p>
+          India's highest civilian award awarded in 1997 for his contributions to science and public service.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Padma Vibhushan</h3>
+        <p>
+          Awarded in 1990 for exceptional service in scientific research and defence.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Padma Bhushan</h3>
+        <p>
+          Received in 1981 for distinguished service in science and engineering.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Global Recognition</h3>
+        <p>
+          Universities across the world honored him with honorary doctorates and recognitions.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Legacy & Inspiration</h2>
+
+    <div class="content-grid">
+
+      <div>
+        <p>
+          Dr. Kalam believed that the youth of India had the power to transform the nation.
+          He continuously emphasized innovation, education, leadership, and integrity.
+        </p>
+
+        <br>
+
+        <p>
+          On 27 July 2015, while delivering a lecture at IIM Shillong, Dr. Kalam collapsed and passed away doing what he loved most — teaching students.
+        </p>
+
+        <br>
+
+        <p>
+          His life remains a symbol of hard work, simplicity, patriotism, and relentless pursuit of knowledge.
+        </p>
+      </div>
+
+      <div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/President_Kalam_in_PCI.jpg" alt="Kalam Speech">
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <h3>Dr. A.P.J. Abdul Kalam</h3>
+    <p>
+      “If you want to shine like a sun, first burn like a sun.”
+    </p>
+
+    <br>
+
+    <p>
+      Designed as a tribute to one of India's greatest visionaries.
+    </p>
+  </footer>
+
+  <button class="top-btn" id="topBtn">↑</button>
+
+  <script>
+    const topBtn = document.getElementById("topBtn");
+
+    window.onscroll = function () {
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        topBtn.style.display = "block";
+      } else {
+        topBtn.style.display = "none";
+      }
+    };
+
+    topBtn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+
+    // Reveal animation
+    const sections = document.querySelectorAll("section, .quote");
+
+    const reveal = () => {
+      sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        const trigger = window.innerHeight * 0.85;
+
+        if(top < trigger){
+          sec.style.opacity = 1;
+          sec.style.transform = "translateY(0px)";
+          sec.style.transition = "all 1s ease";
+        }
+      });
+    };
+
+    sections.forEach(sec => {
+      sec.style.opacity = 0;
+      sec.style.transform = "translateY(40px)";
+    });
+
+    window.addEventListener("scroll", reveal);
+    reveal();
+  </script>
+
+</body>
+</html>
